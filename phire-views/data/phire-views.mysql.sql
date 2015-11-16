@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `[{prefix}]views` (
   `name` varchar(255),
   PRIMARY KEY (`id`),
   INDEX `view_name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13001 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53001 ;
 
 -- --------------------------------------------------------
 

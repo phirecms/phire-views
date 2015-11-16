@@ -56,14 +56,14 @@ class IndexController extends AbstractController
         if ($this->request->isPost()) {
             $this->view->form->addFilter('strip_tags')
                  ->addFilter('htmlentities', [ENT_QUOTES, 'UTF-8'])
-                 ->setViewValues($this->request->getPost());
+                 ->setFieldValues($this->request->getPost());
 
             if ($this->view->form->isValid()) {
                 $this->view->form->clearFilters()
                      ->addFilter('html_entity_decode', [ENT_QUOTES, 'UTF-8'])
                      ->filter();
                 $view = new Model\View();
-                $view->save($this->view->form->getViews());
+                $view->save($this->view->form->getFields());
                 $this->view->id = $view->id;
                 $this->sess->setRequestValue('saved', true);
                 $this->redirect(BASE_PATH . APP_URI . '/views/edit/' . $view->id);
@@ -87,25 +87,25 @@ class IndexController extends AbstractController
         $fields = $this->application->config()['forms']['Phire\Views\Form\View'];
 
         $this->prepareView('views/edit.phtml');
-        $this->view->title     = 'Views : Edit';
+        $this->view->title     = 'Views';
         $this->view->view_name = $view->name;
 
         $fields[1]['name']['attributes']['onkeyup'] = 'phire.changeTitle(this.value);';
 
         $this->view->form = new Form\View($fields);
         $this->view->form->addFilter('htmlentities', [ENT_QUOTES, 'UTF-8'])
-             ->setViewValues($field->toArray());
+             ->setFieldValues($view->toArray());
 
         if ($this->request->isPost()) {
             $this->view->form->addFilter('strip_tags')
-                 ->setViewValues($this->request->getPost());
+                 ->setFieldValues($this->request->getPost());
 
             if ($this->view->form->isValid()) {
                 $this->view->form->clearFilters()
                      ->addFilter('html_entity_decode', [ENT_QUOTES, 'UTF-8'])
                      ->filter();
                 $view = new Model\View();
-                $view->update($this->view->form->getViews());
+                $view->update($this->view->form->getFields());
                 $this->view->id = $view->id;
                 $this->sess->setRequestValue('saved', true);
                 $this->redirect(BASE_PATH . APP_URI . '/views/edit/' . $view->id);

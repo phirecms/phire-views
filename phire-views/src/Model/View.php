@@ -75,7 +75,7 @@ class View extends AbstractModel
     public function update(array $fields)
     {
         $view = Table\Views::findById($fields['id']);
-        if (isset($field->id)) {
+        if (isset($view->id)) {
             $view->name = $fields['name'];
             $view->save();
 
