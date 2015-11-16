@@ -1,0 +1,44 @@
+<?php include $phireHeader; ?>
+    <h1 class="views-header"><?=$title; ?></h1>
+<?php if (count($views) > 0): ?>
+<?php if (null !== $pages): ?>
+    <div class="page-links"><?=$pages; ?></div>
+<?php endif; ?>
+<?php if ($acl->isAllowed($user->role, 'views', 'add')): ?>
+    <nav id="sub-nav">
+        <nav><a href="<?=$phireUri . '/views/add'; ?>">+ Add</a></nav>
+    </nav>
+<?php endif; ?>
+<?php if ($acl->isAllowed($user->role, 'views', 'remove')): ?>
+    <form id="views-form" action="<?=$phireUri . '/views/remove'; ?>" method="post">
+<?php endif; ?>
+        <table class="data-table" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <th><a href="<?=$phireUri . '/views?sort=id';?>">#</a></th>
+                <th><a href="<?=$phireUri . '/views?sort=name';?>">Name</a></th>
+                <th class="text-center"><?php if ($acl->isAllowed($user->role, 'views', 'edit')): ?>Edit<?php else: ?>&nbsp;<?php endif; ?></th>
+                <th class="text-center"><?php if ($acl->isAllowed($user->role, 'views', 'remove')): ?><input type="checkbox" name="checkall" id="checkall" value="rm_views" /><?php else: ?>&nbsp;<?php endif; ?></th>
+            </tr>
+<?php $i = 1; ?>
+<?php foreach ($views as $view): ?>
+            <tr>
+                <td><?=$view->id; ?></td>
+                <td><?=$view->name; ?></td>
+                <td><?php if ($acl->isAllowed($user->role, 'views', 'edit')): ?><a class="edit-link" href="<?=$phireUri . '/views/edit/' . $view->id; ?>">Edit</a><?php else: ?>&nbsp;<?php endif; ?></td>
+                <td class="text-center"><?php if ($acl->isAllowed($user->role, 'views', 'remove')): ?><input type="checkbox" name="rm_views[]" id="rm_views<?=$i++; ?>" value="<?=$view->id; ?>" /><?php else: ?>&nbsp;<?php endif; ?></td>
+            </tr>
+<?php endforeach; ?>
+        </table>
+<?php if ($acl->isAllowed($user->role, 'views', 'remove')): ?>
+        <div id="form-footer"><input type="submit" name="submit" class="process-btn" value="Remove" /></div>
+    </form>
+<?php endif; ?>
+<?php else: ?>
+<?php if ($acl->isAllowed($user->role, 'views', 'add')): ?>
+    <nav id="sub-nav">
+        <nav><a href="<?=$phireUri . '/views/add'; ?>">+ Add</a></nav>
+    </nav>
+<?php endif; ?>
+    <p>There are currently no views.</p>
+<?php endif; ?>
+<?php include $phireFooter; ?>

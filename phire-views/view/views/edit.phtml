@@ -1,0 +1,10 @@
+<?php include $phireHeader; ?>
+    <h1 class="views-header"><?=$title; ?> : <span id="title-span"><?=$view_name; ?></span></h1>
+    <nav id="sub-nav">
+<?php if ($acl->isAllowed($user->role, 'views', 'add')): ?>
+        <nav><a href="<?=$phireUri . '/views/add'; ?>">+ Add</a></nav>
+<?php endif; ?>
+        <nav><a href="<?=$phireUri . '/views'; ?>">Back</a></nav>
+    </nav>
+<?=$form; ?>
+<?php include $phireFooter; ?>
