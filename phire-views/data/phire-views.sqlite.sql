@@ -20,6 +20,13 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS "[{prefix}]views" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "name" varchar,
+  "group_fields" varchar,
+  "group_style" varchar,
+  "group_headers" integer,
+  "single_fields" varchar,
+  "single_style" varchar,
+  "single_headers" integer,
+  "models" text,
   UNIQUE ("id")
 ) ;
 

@@ -26,6 +26,14 @@ return [
                 'permission' => 'edit'
             ]
         ],
+        '/views/json/:id' => [
+            'controller' => 'Phire\Views\Controller\IndexController',
+            'action'     => 'json',
+            'acl'        => [
+                'resource'   => 'views',
+                'permission' => 'json'
+            ]
+        ],
         '/views/remove' => [
             'controller' => 'Phire\Views\Controller\IndexController',
             'action'     => 'remove',

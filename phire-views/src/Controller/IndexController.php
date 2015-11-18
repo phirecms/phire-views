@@ -51,6 +51,18 @@ class IndexController extends AbstractController
 
         $fields = $this->application->config()['forms']['Phire\Views\Form\View'];
 
+        $models = $this->application->module('phire-fields')->config()['models'];
+        foreach ($models as $model => $type) {
+            $fields[4]['model_1']['value'][$model] = $model;
+        }
+
+        $flds = \Phire\Fields\Table\Fields::findAll();
+
+        foreach ($flds->rows() as $f) {
+            $fields[2]['group_fields']['value'][$f->id] = $f->name;
+            $fields[3]['single_fields']['value'][$f->id] = $f->name;
+        }
+
         $this->view->form = new Form\View($fields);
 
         if ($this->request->isPost()) {
@@ -92,6 +104,18 @@ class IndexController extends AbstractController
 
         $fields[1]['name']['attributes']['onkeyup'] = 'phire.changeTitle(this.value);';
 
+        $models = $this->application->module('phire-fields')->config()['models'];
+        foreach ($models as $model => $type) {
+            $fields[4]['model_1']['value'][$model] = $model;
+        }
+
+        $flds = \Phire\Fields\Table\Fields::findAll();
+
+        foreach ($flds->rows() as $f) {
+            $fields[2]['group_fields']['value'][$f->id] = $f->name;
+            $fields[3]['single_fields']['value'][$f->id] = $f->name;
+        }
+
         $this->view->form = new Form\View($fields);
         $this->view->form->addFilter('htmlentities', [ENT_QUOTES, 'UTF-8'])
              ->setFieldValues($view->toArray());
@@ -113,6 +137,25 @@ class IndexController extends AbstractController
         }
 
         $this->send();
+    }
+
+    /**
+     * JSON action method
+     *
+     * @param  int $id
+     * @return void
+     */
+    public function json($id)
+    {
+        $json = [];
+        $view = Table\Views::findById($id);
+
+        if (isset($view->id)) {
+            $json['models'] = (null != $view->models) ? unserialize($view->models) : [];
+        }
+
+        $this->response->setBody(json_encode($json, JSON_PRETTY_PRINT));
+        $this->send(200, ['Content-Type' => 'application/json']);
     }
 
     /**

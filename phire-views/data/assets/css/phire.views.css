@@ -15,7 +15,7 @@
     width: 160px;
     border-left: solid 1px #ccc;
     float: right;
-    min-height: 300px;
+    min-height: 400px;
     height: 100%;
 }
 
@@ -28,7 +28,26 @@
     border-bottom: dotted 1px #aaa;
 }
 
-#view-form-field-group-3, #view-form-field-group-4, #view-form-field-group-5 {
+#view-form-field-group-2 {
+    width: calc(100% - 220px);
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #ccc;
+}
+
+#view-form-field-group-2 > dt, #view-form-field-group-2 > dd {
+    width: 98%;
+    padding: 4px
+}
+
+#view-form-field-group-3 {
+    margin: 0 20px 0 0;
+    padding: 0 20px 0 0;
+    border-right: solid 1px #ccc;
+    float: left;
+}
+
+#view-form-field-group-5 {
     margin: 10px 0 10px 0;
     padding: 10px 0 10px 0;
     clear: left;
@@ -36,11 +55,11 @@
     width: calc(100% - 220px);
 }
 
-#view-form-field-group-4 > dd, #view-form-field-group-5 > dd {
+#view-form-field-group-5 > dd {
     padding: 4px
 }
 
-#view-form-field-group-4 > dd > select, #view-form-field-group-5 > dd > select {
+#view-form-field-group-5 > dd > select {
     margin: 0 0 6px 0;
     padding: 2px 4px 3px 4px;
     height: 25px;
@@ -48,33 +67,13 @@
     min-width: 200px;
 }
 
-#view-form-field-group-4 > dd > input[type=text], #view-form-field-group-5 > dd > input[type=text] {
+#view-form-field-group-5 > dd > input[type=text] {
     margin: 0 0 6px 0;
     padding: 3px 4px 3px 4px;
     height: 17px;
     display: block;
     font-size: 0.825em;
     min-width: 200px;
-}
-
-#view-form-field-group-3 > dt, #view-form-field-group-3 > dd {
-    width: 98%;
-}
-
-#view-form > dl:first-child > dd {
-    margin: 0 0 10px 0;
-}
-
-#view-form > dl:nth-child(2) > dd {
-    padding: 0 2px 18px 2px;
-}
-
-#view-form-field-group-2 > dd > fieldset {
-    padding: 5px 0 0 0;
-}
-
-#view-form-field-group-3 > dt, #view-form-field-group-3 > dd {
-    padding-left: 4px;
 }
 
 .views-nav-icon {
