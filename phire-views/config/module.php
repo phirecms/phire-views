@@ -27,9 +27,9 @@ return [
         ],
         'events' => [
             [
-                'name'     => 'app.route.post',
-                'action'   => 'Phire\Views\Event\View::bootstrap',
-                'priority' => 1000
+                'name'     => 'app.send.pre',
+                'action'   => 'Phire\Views\Event\View::init',
+                'priority' => 500
             ]
         ]
     ]

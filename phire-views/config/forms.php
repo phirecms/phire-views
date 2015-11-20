@@ -17,8 +17,7 @@ return [
                     'table'   => 'Table',
                     'ul'      => 'Bullet List',
                     'ol'      => 'Numbered List',
-                    'div'     => 'Div',
-                    'section' => 'Section'
+                    'div'     => 'Div'
                 ]
             ],
             'group_headers' => [
@@ -35,8 +34,7 @@ return [
                     'table'   => 'Table',
                     'ul'      => 'Bullet List',
                     'ol'      => 'Numbered List',
-                    'div'     => 'Div',
-                    'section' => 'Section'
+                    'div'     => 'Div'
                 ]
             ],
             'single_headers' => [
@@ -65,29 +63,21 @@ return [
         [
             'group_fields' => [
                 'type'  => 'checkbox',
-                'label' => 'Group Fields [ <a class="small-link" href="#" onclick="jax(\'#view-form\').checkAll(\'group_fields\'); return false;">All</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').uncheckAll(\'group_fields\'); return false;">None</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').checkInverse(\'group_fields\'); return false;">Invert</a> ]',
-                'value' => []
+                'label' => 'Group Fields<br />[ <a class="small-link" href="#" onclick="jax(\'#view-form\').checkAll(\'group_fields\'); return false;">All</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').uncheckAll(\'group_fields\'); return false;">None</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').checkInverse(\'group_fields\'); return false;">Invert</a> ]',
+                'value' => [
+                    'id'    => 'id',
+                    'title' => 'title'
+                ]
             ]
         ],
         [
             'single_fields' => [
                 'type'  => 'checkbox',
-                'label' => 'Single Fields [ <a class="small-link" href="#" onclick="jax(\'#view-form\').checkAll(\'single_fields\'); return false;">All</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').uncheckAll(\'single_fields\'); return false;">None</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').checkInverse(\'single_fields\'); return false;">Invert</a> ]',
-                'value' => []
-            ]
-        ],
-        [
-            'model_1' => [
-                'type'       => 'select',
-                'label'      => '<a href="#" onclick="return phire.addModel();">[+]</a> View Models &amp; Types',
-                'value'      => ['----' => '----'],
-                'attributes' => [
-                    'onchange' => 'phire.getModelTypes(this);'
+                'label' => 'Single Fields<br />[ <a class="small-link" href="#" onclick="jax(\'#view-form\').checkAll(\'single_fields\'); return false;">All</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').uncheckAll(\'single_fields\'); return false;">None</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').checkInverse(\'single_fields\'); return false;">Invert</a> ]',
+                'value' => [
+                    'id'    => 'id',
+                    'title' => 'title'
                 ]
-            ],
-            'model_type_1' => [
-                'type'       => 'select',
-                'value'      => ['----' => '----']
             ]
         ]
     ]

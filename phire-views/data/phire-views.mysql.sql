@@ -19,8 +19,7 @@ CREATE TABLE IF NOT EXISTS `[{prefix}]views` (
   `group_headers` int(1),
   `single_fields` varchar(255),
   `single_style` varchar(255),
-  `single_header` int(1),
-  `models` text,
+  `single_headers` int(1),
   PRIMARY KEY (`id`),
   INDEX `view_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53001 ;

@@ -2,21 +2,25 @@
 
 namespace Phire\Views\Event;
 
-use Phire\Views\Table;
+use Phire\Views\Model;
 use Pop\Application;
+use Phire\Controller\AbstractController;
 
 class View
 {
 
     /**
-     * Bootstrap the module
+     * Init the view model
      *
-     * @param  Application $application
+     * @param  AbstractController $controller
+     * @param  Application        $application
      * @return void
      */
-    public static function bootstrap(Application $application)
+    public static function init(AbstractController $controller, Application $application)
     {
-
+        if ($controller->hasView()) {
+            $controller->view()->phire->view = new Model\View();
+        }
     }
 
 }
