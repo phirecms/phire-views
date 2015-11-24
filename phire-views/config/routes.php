@@ -26,7 +26,7 @@ return [
                 'permission' => 'edit'
             ]
         ],
-        '/views/json/:id' => [
+        '/views/json/:id[/:tid][/:vid]' => [
             'controller' => 'Phire\Views\Controller\IndexController',
             'action'     => 'json',
             'acl'        => [

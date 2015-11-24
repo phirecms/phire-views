@@ -2,6 +2,7 @@
 
 namespace Phire\Views\Form;
 
+use Phire\Views\Table;
 use Pop\Form\Form;
 use Pop\Validator;
 
@@ -23,6 +24,28 @@ class View extends Form
         parent::__construct($fields, $action, $method);
         $this->setAttribute('id', 'view-form');
         $this->setIndent('    ');
+    }
+
+    /**
+     * Set the field values
+     *
+     * @param  array $values
+     * @return View
+     */
+    public function setFieldValues(array $values = null)
+    {
+        parent::setFieldValues($values);
+
+        if (($_POST) && (null !== $this->name)) {
+            // Check for dupe name
+            $view = Table\Views::findBy(['name' => $this->name]);
+            if (isset($view->id) && ($this->id != $view->id)) {
+                $this->getElement('name')
+                     ->addValidator(new Validator\NotEqual($this->name, 'That view name already exists.'));
+            }
+        }
+
+        return $this;
     }
 
 }

@@ -53,14 +53,7 @@ class IndexController extends AbstractController
 
         $models = $this->application->module('phire-fields')->config()['models'];
         foreach ($models as $model => $type) {
-            $fields[4]['model_1']['value'][$model] = $model;
-        }
-
-        $flds   = \Phire\Fields\Table\Fields::findAll();
-
-        foreach ($flds->rows() as $f) {
-            $fields[2]['group_fields']['value'][$f->id]  = $f->name;
-            $fields[3]['single_fields']['value'][$f->id] = $f->name;
+            $fields[2]['model_1']['value'][$model] = $model;
         }
 
         $this->view->form = new Form\View($fields);
@@ -97,7 +90,6 @@ class IndexController extends AbstractController
         $view->getById($id);
 
         $fields = $this->application->config()['forms']['Phire\Views\Form\View'];
-        $flds   = \Phire\Fields\Table\Fields::findAll();
 
         $this->prepareView('views/edit.phtml');
         $this->view->title     = 'Views';
@@ -107,12 +99,7 @@ class IndexController extends AbstractController
 
         $models = $this->application->module('phire-fields')->config()['models'];
         foreach ($models as $model => $type) {
-            $fields[4]['model_1']['value'][$model] = $model;
-        }
-
-        foreach ($flds->rows() as $f) {
-            $fields[2]['group_fields']['value'][$f->id]  = $f->name;
-            $fields[3]['single_fields']['value'][$f->id] = $f->name;
+            $fields[2]['model_1']['value'][$model] = $model;
         }
 
         $this->view->form = new Form\View($fields);
@@ -142,15 +129,45 @@ class IndexController extends AbstractController
      * JSON action method
      *
      * @param  int $id
+     * @param  int $tid
+     * @param  int $vid
      * @return void
      */
-    public function json($id)
+    public function json($id, $tid = null, $vid = null)
     {
         $json = [];
-        $view = Table\Views::findById($id);
 
-        if (isset($view->id)) {
-            $json['models'] = (null != $view->models) ? unserialize($view->models) : [];
+        if (is_numeric($id)) {
+            $view = Table\Views::findById($id);
+
+            if (isset($view->id)) {
+                $json['models'] = (null != $view->models) ? unserialize($view->models) : [];
+            }
+        } else {
+            $fields          = \Phire\Fields\Table\Fields::findAll();
+            $json['gMarked'] = [];
+            $json['sMarked'] = [];
+            $json['fields']  = [
+                'id'    => 'id',
+                'title' => 'title'
+            ];
+            foreach ($fields->rows() as $field) {
+                $models = unserialize($field->models);
+                foreach ($models as $model) {
+                    if (($model['model'] == rawurldecode($id)) &&
+                        ((null === $tid) || (null === $model['type_value']) || ($model['type_value'] == $tid))) {
+                        $json['fields'][$field->id] = $field->name;
+                    }
+                }
+            }
+
+            if (null !== $vid) {
+                $view = Table\Views::findById($vid);
+                if (isset($view->id)) {
+                    $json['gMarked'] = explode('|', $view->group_fields);
+                    $json['sMarked'] = explode('|', $view->single_fields);
+                }
+            }
         }
 
         $this->response->setBody(json_encode($json, JSON_PRETTY_PRINT));

@@ -76,6 +76,11 @@ class View extends AbstractModel
                     }
                 }
             }
+
+            if (!empty($data['models'])) {
+                $data['models'] = unserialize($data['models']);
+            }
+
             $this->data = array_merge($this->data, $data);
         }
     }
@@ -92,6 +97,53 @@ class View extends AbstractModel
         if (isset($view->id)) {
             $this->getById($view->id);
         }
+    }
+
+    /**
+     * Render group view
+     *
+     * @param  string $name
+     * @param  string $dateFormat
+     * @param  array  $filters
+     * @param  array  $conds
+     * @return void
+     */
+    public function render($name, $dateFormat = null, array $filters = [], array $conds = [])
+    {
+        if (is_numeric($name)) {
+            $this->getById($name);
+        } else {
+            $this->getByName($name);
+        }
+
+        if (isset($this->data['models'][0]) && isset($this->data['models'][0]['model'])) {
+            $model = $this->data['models'][0]['model'];
+            /*
+            if ((null !== $this->data['models'][0]['type_field']) && (null !== $this->data['models'][0]['type_value'])) {
+                $params = [
+                    $this->data['models'][0]['type_field'] => $this->data['models'][0]['type_value']
+                ];
+            } else {
+                $params = [];
+            }
+            */
+            $params = [];
+            $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params, 'getAll', $filters);
+
+            echo $this->build($objects, $dateFormat);
+        }
+    }
+
+    /**
+     * Render single view
+     *
+     * @param  string $name
+     * @param  string $dateFormat
+     * @return void
+     */
+    public function renderSingle($name, $dateFormat = null)
+    {
+
     }
 
     /**

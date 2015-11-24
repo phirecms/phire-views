@@ -61,6 +61,27 @@ return [
             ]
         ],
         [
+            'model_1' => [
+                'type'       => 'select',
+                'label'      => 'View Model &amp; Type',
+                'required'   => true,
+                'value'      => ['----' => '----'],
+                'attributes' => [
+                    'onchange' => 'phire.getViewModelTypes(this);'
+                ],
+                'validators' => new \Pop\Validator\NotEqual('----', 'You must select a model.')
+            ],
+            'model_type_1' => [
+                'type'       => 'select',
+                'value'      => ['----' => '----'],
+                'required'   => true,
+                'attributes' => [
+                    'onchange' => 'phire.selectViewModelType(this);'
+                ],
+                'validators' => new \Pop\Validator\NotEqual('----', 'You must select a type.')
+            ]
+        ],
+        [
             'group_fields' => [
                 'type'  => 'checkbox',
                 'label' => 'Group Fields<br />[ <a class="small-link" href="#" onclick="jax(\'#view-form\').checkAll(\'group_fields\'); return false;">All</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').uncheckAll(\'group_fields\'); return false;">None</a> | <a class="small-link" href="#" onclick="jax(\'#view-form\').checkInverse(\'group_fields\'); return false;">Invert</a> ]',
@@ -78,20 +99,6 @@ return [
                     'id'    => 'id',
                     'title' => 'title'
                 ]
-            ]
-        ],
-        [
-            'model_1' => [
-                'type'       => 'select',
-                'label'      => '<a href="#" onclick="return phire.addModel();">[+]</a> View Models &amp; Types',
-                'value'      => ['----' => '----'],
-                'attributes' => [
-                    'onchange' => 'phire.getModelTypes(this);'
-                ]
-            ],
-            'model_type_1' => [
-                'type'       => 'select',
-                'value'      => ['----' => '----']
             ]
         ]
     ]
