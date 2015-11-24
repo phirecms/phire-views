@@ -412,7 +412,8 @@ class View extends AbstractModel
             'group_headers'  => (isset($_POST['group_headers']) && isset($_POST['group_headers'][0])) ? 1 : 0,
             'single_fields'  => (!empty($fields['single_fields'])) ? implode('|', $fields['single_fields']) : null,
             'single_style'   => (!empty($fields['single_style'])) ? $fields['single_style'] : null,
-            'single_headers' => (isset($_POST['single_headers']) && isset($_POST['single_headers'][0])) ? 1 : 0
+            'single_headers' => (isset($_POST['single_headers']) && isset($_POST['single_headers'][0])) ? 1 : 0,
+            'models'         => serialize($this->getModels())
         ]);
         $view->save();
 
@@ -436,6 +437,7 @@ class View extends AbstractModel
             $view->single_fields  = (!empty($fields['single_fields'])) ? implode('|', $fields['single_fields']) : null;
             $view->single_style   = (!empty($fields['single_style'])) ? $fields['single_style'] : null;
             $view->single_headers = (isset($_POST['single_headers']) && isset($_POST['single_headers'][0])) ? 1 : 0;
+            $view->models         = serialize($this->getModels());
             $view->save();
 
             $this->data = array_merge($this->data, $view->getColumns());
@@ -557,6 +559,39 @@ class View extends AbstractModel
         }
 
         return $field;
+    }
+
+    /**
+     * Get models
+     *
+     * @return array
+     */
+    protected function getModels()
+    {
+        $models = [];
+
+        // Get new ones
+        foreach ($_POST as $key => $value) {
+            if ((strpos($key, 'model_') !== false) && (strpos($key, 'model_type_') === false) && ($value != '----')) {
+                $id        = substr($key, 6);
+                $typeField = null;
+                $typeValue = null;
+
+                if ($_POST['model_type_' . $id] != '----') {
+                    $type = explode('|', $_POST['model_type_' . $id]);
+                    $typeField = $type[0];
+                    $typeValue = $type[1];
+                }
+
+                $models[] = [
+                    'model'      => $value,
+                    'type_field' => $typeField,
+                    'type_value' => $typeValue
+                ];
+            }
+        }
+
+        return $models;
     }
 
 }

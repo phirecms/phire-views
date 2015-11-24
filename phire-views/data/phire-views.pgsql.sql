@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS "[{prefix}]views" (
   "single_fields" varchar(255),
   "single_style" varchar(255),
   "single_headers" integer,
+  "models" text,
   PRIMARY KEY ("id")
 ) ;
 

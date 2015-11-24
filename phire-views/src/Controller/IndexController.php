@@ -50,6 +50,12 @@ class IndexController extends AbstractController
         $this->view->title = 'Views : Add';
 
         $fields = $this->application->config()['forms']['Phire\Views\Form\View'];
+
+        $models = $this->application->module('phire-fields')->config()['models'];
+        foreach ($models as $model => $type) {
+            $fields[4]['model_1']['value'][$model] = $model;
+        }
+
         $flds   = \Phire\Fields\Table\Fields::findAll();
 
         foreach ($flds->rows() as $f) {
@@ -98,6 +104,11 @@ class IndexController extends AbstractController
         $this->view->view_name = $view->name;
 
         $fields[1]['name']['attributes']['onkeyup'] = 'phire.changeTitle(this.value);';
+
+        $models = $this->application->module('phire-fields')->config()['models'];
+        foreach ($models as $model => $type) {
+            $fields[4]['model_1']['value'][$model] = $model;
+        }
 
         foreach ($flds->rows() as $f) {
             $fields[2]['group_fields']['value'][$f->id]  = $f->name;

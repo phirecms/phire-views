@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `[{prefix}]views` (
   `single_fields` varchar(255),
   `single_style` varchar(255),
   `single_headers` int(1),
+  `models` text,
   PRIMARY KEY (`id`),
   INDEX `view_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53001 ;

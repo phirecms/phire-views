@@ -79,6 +79,20 @@ return [
                     'title' => 'title'
                 ]
             ]
+        ],
+        [
+            'model_1' => [
+                'type'       => 'select',
+                'label'      => '<a href="#" onclick="return phire.addModel();">[+]</a> View Models &amp; Types',
+                'value'      => ['----' => '----'],
+                'attributes' => [
+                    'onchange' => 'phire.getModelTypes(this);'
+                ]
+            ],
+            'model_type_1' => [
+                'type'       => 'select',
+                'value'      => ['----' => '----']
+            ]
         ]
     ]
 ];
