@@ -100,13 +100,52 @@ class View extends AbstractModel
     }
 
     /**
+     * Render pages for group view
+     *
+     * @param  string $name
+     * @return mixed
+     */
+    public function renderPages($name)
+    {
+        if (is_numeric($name)) {
+            $this->getById($name);
+        } else {
+            $this->getByName($name);
+        }
+
+        if (isset($this->data['models'][0]) && isset($this->data['models'][0]['model'])) {
+            $model = $this->data['models'][0]['model'];
+            if ((null !== $this->data['models'][0]['type_field']) && (null !== $this->data['models'][0]['type_value'])) {
+                $params = [
+                    $this->data['models'][0]['type_field'] => $this->data['models'][0]['type_value']
+                ];
+                $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params);
+
+                if (count($objects) > $this->data['pagination']) {
+                    $limit = $this->data['pagination'];
+                    $pages = new \Pop\Paginator\Paginator(count($objects), $limit);
+                    $pages->useInput(true);
+
+                    return $pages;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Render group view
      *
      * @param  string $name
      * @param  string $dateFormat
      * @param  array  $filters
      * @param  array  $conds
-     * @return void
+     * @return mixed
      */
     public function render($name, $dateFormat = null, array $filters = [], array $conds = [])
     {
@@ -118,19 +157,26 @@ class View extends AbstractModel
 
         if (isset($this->data['models'][0]) && isset($this->data['models'][0]['model'])) {
             $model = $this->data['models'][0]['model'];
-            /*
             if ((null !== $this->data['models'][0]['type_field']) && (null !== $this->data['models'][0]['type_value'])) {
                 $params = [
                     $this->data['models'][0]['type_field'] => $this->data['models'][0]['type_value']
                 ];
-            } else {
-                $params = [];
-            }
-            */
-            $params = [];
-            $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params, 'getAll', $filters);
+                $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params, 'getAll', $filters);
 
-            echo $this->build($objects, $dateFormat);
+                if (count($objects) > $this->data['pagination']) {
+                    $page  = (!empty($_GET['page'])) ? (int)$_GET['page'] : null;
+                    $limit = $this->data['pagination'];
+                    $offset = ((null !== $page) && ((int)$page > 1)) ?
+                        ($page * $limit) - $limit : 0;
+                    $objects = array_slice($objects, $offset, $limit);
+                }
+
+                return $this->build($objects, $dateFormat);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 
@@ -138,12 +184,31 @@ class View extends AbstractModel
      * Render single view
      *
      * @param  string $name
+     * @param  int    $id
      * @param  string $dateFormat
-     * @return void
+     * @param  array  $filters
+     * @return mixed
      */
-    public function renderSingle($name, $dateFormat = null)
+    public function renderSingle($name, $id, $dateFormat = null, array $filters = [])
     {
+        if (is_numeric($name)) {
+            $this->getById($name);
+        } else {
+            $this->getByName($name);
+        }
 
+        if (isset($this->data['models'][0]) && isset($this->data['models'][0]['model'])) {
+            $model = $this->data['models'][0]['model'];
+            if ((null !== $this->data['models'][0]['type_field']) && (null !== $this->data['models'][0]['type_value'])) {
+                $object = \Phire\Fields\Model\FieldValue::getModelObject($model, ['id' => $id], 'getById', $filters);
+
+                return $this->buildSingle($object, $dateFormat);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     /**

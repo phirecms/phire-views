@@ -30,6 +30,11 @@ return [
                 'name'     => 'app.send.pre',
                 'action'   => 'Phire\Views\Event\View::init',
                 'priority' => 500
+            ],
+            [
+                'name'     => 'app.send.post',
+                'action'   => 'Phire\Views\Event\View::parseViews',
+                'priority' => 1000
             ]
         ]
     ]
