@@ -103,9 +103,11 @@ class View extends AbstractModel
      * Render pages for group view
      *
      * @param  string $name
+     * @param  string $table
+     * @param  array  $conds
      * @return mixed
      */
-    public function renderPages($name)
+    public function renderPages($name, $table = null, array $conds = [])
     {
         if (is_numeric($name)) {
             $this->getById($name);
@@ -119,7 +121,14 @@ class View extends AbstractModel
                 $params = [
                     $this->data['models'][0]['type_field'] => $this->data['models'][0]['type_value']
                 ];
-                $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params);
+
+                if (null !== $table) {
+                    $objects = \Phire\Fields\Model\FieldValue::getModelObjectsFromTable(
+                        $table, $model, $params, [], $conds
+                    );
+                } else {
+                    $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params);
+                }
 
                 if (count($objects) > $this->data['pagination']) {
                     $limit = $this->data['pagination'];
@@ -144,10 +153,12 @@ class View extends AbstractModel
      * @param  string $name
      * @param  string $dateFormat
      * @param  array  $filters
+     * @param  string $table
      * @param  array  $conds
+     * @param  string $order
      * @return mixed
      */
-    public function render($name, $dateFormat = null, array $filters = [], array $conds = [])
+    public function render($name, $dateFormat = null, array $filters = [], $table = null, array $conds = [], $order = null)
     {
         if (is_numeric($name)) {
             $this->getById($name);
@@ -161,7 +172,14 @@ class View extends AbstractModel
                 $params = [
                     $this->data['models'][0]['type_field'] => $this->data['models'][0]['type_value']
                 ];
-                $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params, 'getAll', $filters);
+
+                if (null !== $table) {
+                    $objects = \Phire\Fields\Model\FieldValue::getModelObjectsFromTable(
+                        $table, $model, $params, $filters, $conds, $order
+                    );
+                } else {
+                    $objects = \Phire\Fields\Model\FieldValue::getModelObjects($model, $params, 'getAll', $filters);
+                }
 
                 if (count($objects) > $this->data['pagination']) {
                     $page  = (!empty($_GET['page'])) ? (int)$_GET['page'] : null;
