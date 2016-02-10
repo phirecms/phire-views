@@ -14,11 +14,10 @@ phire.selectViewModel = function(sel) {
             phireCookie.base_path + phireCookie.app_uri + '/views/json/' + encodeURIComponent(jax(sel).val()) + '/' + jax('#id').val() :
             phireCookie.base_path + phireCookie.app_uri + '/views/json/' + encodeURIComponent(jax(sel).val());
 
-        var json = jax.get(url);
+        var json   = jax.get(url);
 
         jax('#view-form-field-group-4 > dd:nth-child(2) > fieldset:first-child').remove();
         jax('#view-form-field-group-5 > dd:nth-child(2) > fieldset:first-child').remove();
-
         jax('#view-form-field-group-4 > dd:nth-child(2)').appendCheckbox(json.fields, {"name" : "group_fields[]", "id" : "group_fields"}, json.gMarked);
         jax('#view-form-field-group-5 > dd:nth-child(2)').appendCheckbox(json.fields, {"name" : "single_fields[]", "id" : "single_fields"}, json.sMarked);
     }

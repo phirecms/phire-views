@@ -32,7 +32,7 @@ class View
      */
     public static function parseViews(AbstractController $controller, Application $application)
     {
-        if ($controller->hasView()) {
+        if (!($controller instanceof \Phire\Content\Controller\ContentController) && ($controller->hasView())) {
             $body = $controller->response()->getBody();
             if (strpos($body, '[{view_') !== false) {
                 // Parse any view placeholders

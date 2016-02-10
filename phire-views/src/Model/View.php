@@ -50,8 +50,10 @@ class View extends AbstractModel
             $data = $view->getColumns();
             if (!empty($data['group_fields'])) {
                 $data['group_fields']       = explode('|', $data['group_fields']);
+                $data['_group_fields']      = [];
                 $data['group_fields_names'] = [];
                 foreach ($data['group_fields'] as $id) {
+                    $data['_group_fields'][] = '_' . $id;
                     if (!is_numeric($id)) {
                         $data['group_fields_names'][] = $id;
                     } else {
@@ -64,8 +66,10 @@ class View extends AbstractModel
             }
             if (!empty($data['single_fields'])) {
                 $data['single_fields']       = explode('|', $data['single_fields']);
+                $data['_single_fields']      = [];
                 $data['single_fields_names'] = [];
                 foreach ($data['single_fields'] as $id) {
+                    $data['_single_fields'][] = '_' . $id;
                     if (!is_numeric($id)) {
                         $data['single_fields_names'][] = $id;
                     } else {
@@ -188,7 +192,6 @@ class View extends AbstractModel
                         ($page * $limit) - $limit : 0;
                     $objects = array_slice($objects, $offset, $limit);
                 }
-
                 return $this->build($objects, $dateFormat);
             } else {
                 return null;
@@ -540,6 +543,21 @@ class View extends AbstractModel
      */
     public function save(array $fields)
     {
+        if (!empty($fields['group_fields'])) {
+            foreach ($fields['group_fields'] as $k => $v) {
+                if (substr($v, 0, 1) == '_') {
+                    $fields['group_fields'][$k] = substr($v, 1);
+                }
+            }
+        }
+        if (!empty($fields['single_fields'])) {
+            foreach ($fields['single_fields'] as $k => $v) {
+                if (substr($v, 0, 1) == '_') {
+                    $fields['single_fields'][$k] = substr($v, 1);
+                }
+            }
+        }
+
         $view = new Table\Views([
             'name'           => $fields['name'],
             'group_fields'   => (!empty($fields['group_fields'])) ? implode('|', $fields['group_fields']) : null,
@@ -565,6 +583,21 @@ class View extends AbstractModel
     {
         $view = Table\Views::findById($fields['id']);
         if (isset($view->id)) {
+            if (!empty($fields['group_fields'])) {
+                foreach ($fields['group_fields'] as $k => $v) {
+                    if (substr($v, 0, 1) == '_') {
+                        $fields['group_fields'][$k] = substr($v, 1);
+                    }
+                }
+            }
+            if (!empty($fields['single_fields'])) {
+                foreach ($fields['single_fields'] as $k => $v) {
+                    if (substr($v, 0, 1) == '_') {
+                        $fields['single_fields'][$k] = substr($v, 1);
+                    }
+                }
+            }
+
             $view->name           = $fields['name'];
             $view->group_fields   = (!empty($fields['group_fields'])) ? implode('|', $fields['group_fields']) : null;
             $view->group_style    = (!empty($fields['group_style'])) ? $fields['group_style'] : null;

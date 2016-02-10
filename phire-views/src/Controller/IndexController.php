@@ -102,9 +102,13 @@ class IndexController extends AbstractController
             $fields[2]['model_1']['value'][$model] = $model;
         }
 
+        $viewAry = $view->toArray();
+        $viewAry['group_fields']  = $viewAry['_group_fields'];
+        $viewAry['single_fields'] = $viewAry['_single_fields'];
+
         $this->view->form = new Form\View($fields);
         $this->view->form->addFilter('htmlentities', [ENT_QUOTES, 'UTF-8'])
-             ->setFieldValues($view->toArray());
+             ->setFieldValues($viewAry);
 
         if ($this->request->isPost()) {
             $this->view->form->addFilter('strip_tags')
@@ -148,15 +152,15 @@ class IndexController extends AbstractController
             $json['gMarked'] = [];
             $json['sMarked'] = [];
             $json['fields']  = [
-                'id'    => 'id',
-                'title' => 'title'
+                '_id'    => 'id',
+                '_title' => 'title'
             ];
             foreach ($fields->rows() as $field) {
                 $models = unserialize($field->models);
                 foreach ($models as $model) {
                     if (($model['model'] == rawurldecode($id)) &&
                         ((null === $tid) || (null === $model['type_value']) || ($model['type_value'] == $tid))) {
-                        $json['fields'][$field->id] = $field->name;
+                        $json['fields']['_' . $field->id] = $field->name;
                     }
                 }
             }
@@ -166,6 +170,12 @@ class IndexController extends AbstractController
                 if (isset($view->id)) {
                     $json['gMarked'] = explode('|', $view->group_fields);
                     $json['sMarked'] = explode('|', $view->single_fields);
+                    foreach ($json['gMarked'] as $k => $v) {
+                        $json['gMarked'][$k] = '_' . $v;
+                    }
+                    foreach ($json['sMarked'] as $k => $v) {
+                        $json['sMarked'][$k] = '_' . $v;
+                    }
                 }
             }
         }
