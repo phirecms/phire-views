@@ -32,12 +32,15 @@ class View
      */
     public static function parseViews(AbstractController $controller, Application $application)
     {
-        if (!($controller instanceof \Phire\Content\Controller\ContentController) && ($controller->hasView())) {
+        if (!($controller instanceof \Phire\Content\Controller\ContentController) &&
+            !($controller instanceof \Phire\Templates\Controller\IndexController) && ($controller->hasView())) {
             $body = $controller->response()->getBody();
+
             if (strpos($body, '[{view_') !== false) {
                 // Parse any view placeholders
                 $groupIds  = [];
                 $singleIds = [];
+                $modelId   = null;
                 $views     = [];
 
                 $viewModel = new Model\View(['pagination' => $controller->config()->pagination]);
@@ -51,9 +54,14 @@ class View
                         $id = str_replace('}]', '', $id);
                         if (strpos($id, '_') !== false) {
                             $idAry = explode('_', $id);
+                            if (!empty($idAry[1])) {
+                                $modelId = $idAry[1];
+                            } else if (!empty($controller->view()->id)) {
+                                $modelId = $controller->view()->id;
+                            }
                             $singleIds[] = [
                                 'view_id'  => $idAry[0],
-                                'model_id' => $idAry[1]
+                                'model_id' => $modelId
                             ];
                         } else {
                             $groupIds[] = $id;
@@ -71,9 +79,14 @@ class View
 
                 if (count($singleIds) > 0) {
                     foreach ($singleIds as $id) {
-                        $body = str_replace(
-                            '[{view_' . $id['view_id'] . '_' . $id['model_id'] . '}]', $viewModel->renderSingle($id['view_id'], $id['model_id']), $body
-                        );
+                        if (null !== $id['model_id']) {
+                            $body = str_replace(
+                                '[{view_' . $id['view_id'] . '_' . $id['model_id'] . '}]', $viewModel->renderSingle($id['view_id'], $id['model_id']), $body
+                            );
+                            $body = str_replace(
+                                '[{view_' . $id['view_id'] . '_}]', $viewModel->renderSingle($id['view_id'], $id['model_id']), $body
+                            );
+                        }
                     }
                 }
 

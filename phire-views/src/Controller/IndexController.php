@@ -51,9 +51,11 @@ class IndexController extends AbstractController
 
         $fields = $this->application->config()['forms']['Phire\Views\Form\View'];
 
-        $models = $this->application->module('phire-fields')->config()['models'];
-        foreach ($models as $model => $type) {
-            $fields[2]['model_1']['value'][$model] = $model;
+        if ($this->application->isRegistered('phire-fields')) {
+            $models = $this->application->module('phire-fields')->config()['models'];
+            foreach ($models as $model => $type) {
+                $fields[2]['model_1']['value'][$model] = $model;
+            }
         }
 
         $this->view->form = new Form\View($fields);
@@ -97,9 +99,11 @@ class IndexController extends AbstractController
 
         $fields[1]['name']['attributes']['onkeyup'] = 'phire.changeTitle(this.value);';
 
-        $models = $this->application->module('phire-fields')->config()['models'];
-        foreach ($models as $model => $type) {
-            $fields[2]['model_1']['value'][$model] = $model;
+        if ($this->application->isRegistered('phire-fields')) {
+            $models = $this->application->module('phire-fields')->config()['models'];
+            foreach ($models as $model => $type) {
+                $fields[2]['model_1']['value'][$model] = $model;
+            }
         }
 
         $viewAry = $view->toArray();
