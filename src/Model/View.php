@@ -1,11 +1,32 @@
 <?php
+/**
+ * Phire Views Module
+ *
+ * @link       https://github.com/phirecms/phire-views
+ * @author     Nick Sagona, III <dev@nolainteractive.com>
+ * @copyright  Copyright (c) 2009-2016 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @license    http://www.phirecms.org/license     New BSD License
+ */
 
+/**
+ * @namespace
+ */
 namespace Phire\Views\Model;
 
 use Phire\Views\Table;
 use Phire\Model\AbstractModel;
 use Pop\Dom\Child;
 
+/**
+ * View Model class
+ *
+ * @category   Phire\Views
+ * @package    Phire\Views
+ * @author     Nick Sagona, III <dev@nolainteractive.com>
+ * @copyright  Copyright (c) 2009-2016 NOLA Interactive, LLC. (http://www.nolainteractive.com)
+ * @license    http://www.phirecms.org/license     New BSD License
+ * @version    1.0.0
+ */
 class View extends AbstractModel
 {
 

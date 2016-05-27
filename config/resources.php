@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * phire-views resources
+ */
 return [
     'views' => [
         'index',

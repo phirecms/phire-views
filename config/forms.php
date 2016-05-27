@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * phire-views form configuration
+ */
 return [
     'Phire\Views\Form\View' => [
         [

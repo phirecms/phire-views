@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * phire-views routes
+ */
 return [
     APP_URI => [
         '/views[/]' => [
